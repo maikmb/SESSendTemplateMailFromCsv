@@ -1,27 +1,28 @@
 const csv = require('csv-parser')
 const fs = require('fs')
 const AWS = require('aws-sdk');
+const { startCase, toLower } = require('lodash');
 
 async function run() {
-    const mailingDataBase = await readCSV('Mailing_NPS');
+    const mailingDataBase = await readCSV('Mailing_Fundos_One.csv');
+    const templateName = 'VxCustomerExperienceInformesRendimentosOne';
 
-    testRenderTemplate({
-        templateName: 'VxCustomerExperienceInformativoNPS',
-        templateData: JSON.stringify({
-            nome: 'Maik'
-        })
+    await testRenderTemplate({
+        templateName: templateName,
+        templateData: JSON.stringify({})
     });
 
     for (const customer of mailingDataBase) {
         try {
-            const customerName = customer["﻿Nome"];
-            const customerEmail = customer['Email'];
+            const customerName = customer["﻿NomeInvestidor"];
+            const customerEmail = customer['EmailInvestidor'];
+            const firstName = customerName.split(" ").length > 0 ? startCase(toLower(customerName.split(" ")[0])) : customerName;
 
             const sendOutput = await sendTemplatedEmail({
                 toEmailAddress: customerEmail,
-                templateName: 'VxCustomerExperienceInformativoNPS',
+                templateName: templateName,
                 templateData: JSON.stringify({
-                    nome: customerName
+                    name: firstName
                 })
             });
 
@@ -36,11 +37,11 @@ async function run() {
 function testRenderTemplate({ templateName, templateData }) {
     const aws = GetSESClient();
 
-    const testTemplate = aws
+    return testTemplate = aws
         .testRenderTemplate({ TemplateName: templateName, TemplateData: templateData })
         .promise()
         .then(result => console.log("TestRenderTemplate Success:", result))
-        .catch(error => console.error("TestRenderTemplate Error:", result));
+        .catch(error => console.error("TestRenderTemplate Error:", error));
 }
 
 function sendTemplatedEmail({ toEmailAddress, templateName, templateData }) {
@@ -53,7 +54,7 @@ function sendTemplatedEmail({ toEmailAddress, templateName, templateData }) {
                     toEmailAddress
                 ]
             },
-            Source: 'Filippo Rovella<frl@vortx.com.br>',
+            Source: 'Time Vortx<time@vortx.com.br>',
             Template: templateName,
             TemplateData: templateData,
             ReplyToAddresses: [
