@@ -5,7 +5,7 @@ const axios = require('axios').default
 const s3Client = require('../aws/s3Client');
 
 function sendTemplatedEmail({ toEmailAddress, templateName, templateData }) {
-    return new Promise((resolve, reject) => {        
+    return new Promise((resolve, reject) => {             
         const aws = GetSESClient();
 
         const params = {
