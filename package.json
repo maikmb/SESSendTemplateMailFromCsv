@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node index --inspect",
+    "start": "node index"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.720.0",
+    "axios": "^0.21.1",
     "csv-parser": "^2.3.3",
     "lodash": "^4.17.20"
   }
