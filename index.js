@@ -3,7 +3,10 @@ const config = require('./config');
 const { readCSV } = require('./helpers/csvHelper');
 
 async function run(isParallel) {
-    const dataSource = await readCSV(config.csvPath);    
+
+    console.log(`🔺 DataBase Path: ${config.csvPath}`);
+
+    const dataSource = await readCSV(config.csvPath);        
     const emailHandler = createEmailHandler(isParallel);
     await emailHandler.execute(dataSource);
 
