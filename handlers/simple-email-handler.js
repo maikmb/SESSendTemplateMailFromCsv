@@ -6,6 +6,10 @@ class SimpleEmailHandler extends BaseHandler {
     }
 
     async execute(dataSource) {
+
+        console.log('ℹ Caregando modo de processamento unico')
+        console.log(`ℹ Total de Registros: ${dataSource.length}`)
+
         await this.sendEmailForList(dataSource);
     }
 }

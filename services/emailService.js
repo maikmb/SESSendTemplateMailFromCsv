@@ -3,6 +3,7 @@ const AWS = require('aws-sdk');
 const { startCase, toLower, isEmpty, chunk, uniqueId, isNull } = require('lodash');
 const axios = require('axios').default
 const s3Client = require('../aws/s3Client');
+const config = require('../config')
 
 function sendTemplatedEmail({ toEmailAddress, templateName, templateData }) {
     return new Promise((resolve, reject) => {             
@@ -14,12 +15,10 @@ function sendTemplatedEmail({ toEmailAddress, templateName, templateData }) {
                     toEmailAddress
                 ]
             },
-            Source: 'Time Vortx<time@vortx.com.br>',
+            Source: config.source,
             Template: templateName,
             TemplateData: templateData,
-            ReplyToAddresses: [
-                'middlefundos@vortx.com.br'
-            ]
+            ReplyToAddresses: config.replyToAddresses
         };
 
         aws.sendTemplatedEmail(params)

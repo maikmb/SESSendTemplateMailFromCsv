@@ -9,7 +9,7 @@ class BaseHandler {
 
     async sendEmailForList(dataSource) {
         for (const dataRow of dataSource) {
-            const emailAddress = dataRow["email"];
+            const emailAddress = dataRow["email"];            
             try {
 
                 if (!validateEmail(emailAddress)) continue;

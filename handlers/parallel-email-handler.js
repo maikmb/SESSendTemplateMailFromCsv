@@ -1,4 +1,4 @@
-const { chunk } = require("lodash");
+const { chunk, first, take,  } = require("lodash");
 const BaseHandler = require("./base-handler");
 const config = require("../config");
 
@@ -8,7 +8,8 @@ class ParallelEmailHandler extends BaseHandler {
     }
 
     async execute(dataSource) {
-        const chunckedSource = chunk(dataSource, config.chunkSize);
+        const chunkSize = dataSource.length / config.batchSize;
+        const chunckedSource = chunk(dataSource, chunkSize);
         const tasks = [];
 
         console.log('ℹ Caregando modo de processamento multi thread')        
@@ -19,6 +20,7 @@ class ParallelEmailHandler extends BaseHandler {
             tasks.push(this.sendEmailForList(chunkedItem));
         }
     
+        
         await Promise.all(tasks);
     }
 }
