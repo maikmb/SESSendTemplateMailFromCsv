@@ -1,3 +1,4 @@
 data-loader/
 node_modules/
 aws-key.json
+logs/

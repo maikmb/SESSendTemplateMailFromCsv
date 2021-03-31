@@ -1,7 +1,7 @@
 const config = {
     templateName: 'VxLoginUnicoReminderRegister',
     csvPath: 'data-loader/investidor_lote_1.csv',
-    batchSize: 2,
+    batchSize: 10,
     isParallel: true,
     source: 'Time Vortx<time@vortx.com.br>',
     replyToAddresses: [

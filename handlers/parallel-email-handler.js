@@ -16,7 +16,7 @@ class ParallelEmailHandler extends BaseHandler {
         console.log(`ℹ Total Grupos Processo: ${chunckedSource.length}`)
         console.log(`ℹ Total de Registros: ${dataSource.length}`)    
     
-        for (const chunkedItem of chunckedSource) {
+        for (const chunkedItem of chunckedSource) { 
             tasks.push(this.sendEmailForList(chunkedItem));
         }
     
