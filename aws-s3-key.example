@@ -1,0 +1,7 @@
+const s3Key = {
+    "accessKeyId": "",
+    "secretAccessKey": "",
+    "region": ""
+}
+
+module.exports = s3Key

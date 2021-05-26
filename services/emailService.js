@@ -1,12 +1,29 @@
-const fs = require('fs')
 const AWS = require('aws-sdk');
-const { startCase, toLower, isEmpty, chunk, uniqueId, isNull } = require('lodash');
-const axios = require('axios').default
-const s3Client = require('../aws/s3Client');
 const config = require('../config')
+const nodemailer = require("nodemailer");
+
+async function sendEmailWithAttachments({ html, text, subject, to, attachments }) {
+
+    let transporter = nodemailer.createTransport({
+        SES: new AWS.SES({ region: 'us-east-1', apiVersion: "2010-12-01" })
+    });
+
+    // send mail with defined transport object
+    let response = await transporter.sendMail({
+        from: config.source,
+        to: to,
+        subject: subject,
+        html: html,
+        text: text,
+        attachments: attachments,
+        replyTo: config.replyToAddresses[0]
+    });
+
+    return response;
+}
 
 function sendTemplatedEmail({ toEmailAddress, templateName, templateData }) {
-    return new Promise((resolve, reject) => {             
+    return new Promise((resolve, reject) => {
         const aws = GetSESClient();
 
         const params = {
@@ -26,40 +43,6 @@ function sendTemplatedEmail({ toEmailAddress, templateName, templateData }) {
             .then(result => resolve(result))
             .catch(error => reject(error));
     });
-}
-
-function getFirstLetter(customerName) {
-    const firstName = customerName.split(" ").length > 0 ? startCase(toLower(customerName.split(" ")[0])) : customerName;
-    return firstName;
-}
-
-function normalizeEmailAddress(emailAddress) {
-    const customerEmail = emailAddress.substring(emailAddress.indexOf('<')).replace(/<|>/g, '');
-    return customerEmail;
-}
-
-// function getEarningsReportUrl(customerDocument) {
-//     const urlEarningsReport = await getUrlEarningsReport(customerDocument);
-//     if(!urlEarningsReport) throw new Error("Investor without earnings report:" + customerDocument);
-//     const s3 = new s3Client();
-//     const presignedUrl = await s3.assinarUrlObjeto(urlEarningsReport);
-// }
-
-function onlyNumbers(text) {
-    return text.replace(/\D+/g, '');
-}
-
-async function getUrlEarningsReport(investorDocument) {
-    var options = {
-        headers: {
-            'apikey': '147e2a542d3925ed14d5f59d7939d6233e05a1932ff44f35b86b7522c309f2ab',
-            'system': 'ApiVxInforma'
-        }
-    };
-
-    return await axios
-        .get(`https://ms-escrituracao.vortx.com.br/api/earnings-report/all-investor-earnings-report?ReferenceYear=2020&InvestorDocument=${investorDocument}`, options)
-        .then(resp => resp.data.link)
 }
 
 function testRenderTemplate({ templateName, templateData }) {
@@ -84,4 +67,4 @@ function GetS3Client() {
     return aws;
 }
 
-module.exports = { sendTemplatedEmail }
+module.exports = { sendTemplatedEmail, sendEmailWithAttachments }

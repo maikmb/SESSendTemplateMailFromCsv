@@ -1,9 +1,9 @@
 const AWS = require("aws-sdk")
-
+const s3Key = require('../aws-s3-key')
 class s3Client {
   constructor() {
-    this.s3 = new AWS.S3({ region: 'us-east-1',  accessKeyId: 'AKIA2IKUOQ65QL5QOQ6J', secretAccessKey: '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' })
     
+    this.s3 = new AWS.S3({ region: s3Key.region,  accessKeyId: s3Key.accessKeyId, secretAccessKey: s3Key.secretAccessKey })    
   }
 
   async assinarUrlObjeto(Key) {

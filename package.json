@@ -13,7 +13,10 @@
   "dependencies": {
     "aws-sdk": "^2.720.0",
     "axios": "^0.21.1",
+    "cli-color": "^2.0.0",
     "csv-parser": "^2.3.3",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "nodemailer": "^6.6.1",
+    "polly-js": "^1.8.2"
   }
 }

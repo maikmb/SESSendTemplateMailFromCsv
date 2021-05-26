@@ -5,18 +5,20 @@ var fs = require("fs");
 // to whatever file references it.
 var Logger = (exports.Logger = {});
 
+const date =  new Date().toISOString().split('T')[0].replace(/-/g, '')
+
 // Create 3 sets of write streams for the 3 levels of logging we wish to do
 // every time we get an error we'll append to our error streams, any debug message
 // to our debug stream etc...
-var infoStream = fs.createWriteStream("logs/info.txt");
+var infoStream = fs.createWriteStream(`logs/info-${date}.txt`);
 // Notice we set the path of our log files in the first parameter of
 // fs.createWriteStream. This could easily be pulled in from a config
 // file if needed.
-var errorStream = fs.createWriteStream("logs/error.txt");
+var errorStream = fs.createWriteStream(`logs/error-${date}.txt`);
 // createWriteStream takes in options as a second, optional parameter
 // if you wanted to set the file encoding of your output file you could
 // do so by setting it like so: ('logs/debug.txt' , { encoding : 'utf-8' });
-var debugStream = fs.createWriteStream("logs/debug.txt");
+var debugStream = fs.createWriteStream(`logs/debug-${date}.txt`);
 
 // Finally we create 3 different functions
 // each of which appends our given messages to
