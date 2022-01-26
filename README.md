@@ -4,8 +4,7 @@ Enviar e-mails de nunca foi tão fácil, utilizando este repositório você pode
 
 ## Como disparar meus e-mails?
 
-1. Criar template de E-mail no VxMails
-2. Integrar template na AWS clicando no botão integrar na edição de template no VxMails
+1. Criar template de E-mail
 3. Abrir o projeto no VSCode
 3. Salvar a sua planilha com os e-mails no formato CSV separado por virgulas
 4. Instalar os modulos da aplicação usando o comando npm i
